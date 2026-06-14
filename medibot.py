@@ -509,8 +509,8 @@ def main():
                         st.markdown(f"- **Page:** {source_dict.get('page_label', 'N/A')}")
                         st.markdown(f"- **File:** {source_dict.get('source', 'N/A')}")
 
-    prompt = st.chat_input("Ask MediBot anything about health...")
-
+    placeholder_text = "Ask MediBot" if not st.session_state.messages else "Reply to MediBot"
+    prompt = st.chat_input(placeholder_text)
     if not st.session_state.messages and not prompt:
         with hero_placeholder.container():
             render_hero()
