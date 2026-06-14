@@ -425,10 +425,11 @@ def render_login_signup(controller):
 def render_sidebar(controller):
     with st.sidebar:
         # Username display
-        st.markdown(f"<div style='font-size: 1.05rem; font-weight: 600; color: #f5f5f5; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px;'><span style='font-size: 1.2rem; color: #2dd4a8;'>👤</span> {st.session_state.username}</div>", unsafe_allow_html=True)
+        user_svg = '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2dd4a8"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-32q0-34 17.5-62.5T224-292q62-31 126-46.5T480-354q66 0 130 15.5T736-292q29 15 46.5 43.5T800-192v32H160Z"/></svg>'
+        st.markdown(f"<div style='font-size: 1.05rem; font-weight: 600; color: #f5f5f5; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px;'>{user_svg} {st.session_state.username}</div>", unsafe_allow_html=True)
         
         # New Chat Button
-        if st.button("➕ New Chat", key="new_chat", use_container_width=True):
+        if st.button("New Chat", key="new_chat", use_container_width=True, icon=":material/add:"):
             st.session_state.current_session_id = None
             st.session_state.messages = []
             st.rerun()
@@ -502,7 +503,7 @@ def main():
         with st.chat_message(message['role'], avatar=avatar_path):
             st.markdown(message['content'])
             if 'sources' in message and message['sources']:
-                with st.expander("📚 Source Documents"):
+                with st.expander("Source Documents", icon=":material/library_books:"):
                     for i, source_dict in enumerate(message['sources'], 1):
                         st.markdown(f"**Source {i}:**")
                         st.markdown(f"- **Page:** {source_dict.get('page_label', 'N/A')}")
@@ -569,7 +570,7 @@ Answer:"""
 
             with st.chat_message('assistant', avatar=BOT_AVATAR_PATH):
                 st.markdown(result_formatted)
-                with st.expander("📚 Source Documents"):
+                with st.expander("Source Documents", icon=":material/library_books:"):
                     for i, s_dict in enumerate(source_data, 1):
                         st.markdown(f"**Source {i}:**")
                         st.markdown(f"- **Page:** {s_dict.get('page_label', 'N/A')}")
