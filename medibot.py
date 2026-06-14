@@ -139,6 +139,15 @@ def inject_custom_css():
             padding: 0;
         }
 
+        /* Hide 'Press Enter to submit form' text */
+        div[data-testid="stForm"] .stFormSubmitContent {
+            display: none !important;
+        }
+
+        .stForm [data-testid="InputInstructions"] {
+            display: none !important;
+        }
+
         /* ===== Tab styling: green underline ===== */
         .stTabs [data-baseweb="tab-list"] {
             gap: 1.5rem;
