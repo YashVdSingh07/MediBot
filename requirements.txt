@@ -9,3 +9,5 @@ faiss-cpu
 python-dotenv
 bcrypt
 sentence-transformers
+
+streamlit-cookies-controller

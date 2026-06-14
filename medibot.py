@@ -12,6 +12,7 @@ from langchain_groq import ChatGroq
 
 from dotenv import load_dotenv, find_dotenv
 import db
+from streamlit_cookies_controller import CookieController
 
 load_dotenv(find_dotenv())
 
@@ -378,7 +379,7 @@ def render_hero():
     """, unsafe_allow_html=True)
 
 
-def render_login_signup():
+def render_login_signup(controller):
     st.markdown(f"""
     <div style="text-align: center; margin-bottom: 2rem; margin-top: 2rem;">
         <h2 style='color: #f5f5f5; font-family: Inter, sans-serif; font-weight: 600; margin-top: 1rem;'>Welcome to MediBot</h2>
@@ -402,6 +403,8 @@ def render_login_signup():
                         st.session_state.username = username
                         st.session_state.current_session_id = None
                         st.session_state.messages = []
+                        controller.set('user_id', user_id)
+                        controller.set('username', username)
                         st.rerun()
                     else:
                         st.error("Invalid username or password")
@@ -423,7 +426,7 @@ def render_login_signup():
                             st.error("Name already exists.")
 
 
-def render_sidebar():
+def render_sidebar(controller):
     with st.sidebar:
         col1, col2 = st.columns([4, 1.2])
         with col1:
@@ -454,6 +457,8 @@ def render_sidebar():
             for key in ['user_id', 'username', 'current_session_id', 'messages']:
                 if key in st.session_state:
                     del st.session_state[key]
+            controller.remove('user_id')
+            controller.remove('username')
             st.rerun()
 
 
@@ -470,13 +475,23 @@ def main():
 
     inject_custom_css()
 
+    # --- Restore Authentication from Cookies ---
+    controller = CookieController()
+    
+    if 'user_id' not in st.session_state:
+        cookie_user_id = controller.get('user_id')
+        cookie_username = controller.get('username')
+        if cookie_user_id and cookie_username:
+            st.session_state.user_id = cookie_user_id
+            st.session_state.username = cookie_username
+
     # --- Authentication Guard ---
     if 'user_id' not in st.session_state:
-        render_login_signup()
+        render_login_signup(controller)
         return
 
     # --- Authenticated State ---
-    render_sidebar()
+    render_sidebar(controller)
 
     if 'messages' not in st.session_state:
         st.session_state.messages = []
