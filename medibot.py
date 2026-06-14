@@ -399,8 +399,8 @@ def render_login_signup(controller):
                         st.session_state.username = username
                         st.session_state.current_session_id = None
                         st.session_state.messages = []
-                        controller.set('user_id', user_id, max_age=2592000)
-                        controller.set('username', username, max_age=2592000)
+                        controller.set('user_id', user_id, max_age=2592000, same_site='none', secure=True)
+                        controller.set('username', username, max_age=2592000, same_site='none', secure=True)
                         st.rerun()
                     else:
                         st.error("Invalid username or password")
@@ -454,8 +454,8 @@ def render_sidebar(controller):
             for key in ['user_id', 'username', 'current_session_id', 'messages']:
                 if key in st.session_state:
                     del st.session_state[key]
-            controller.remove('user_id')
-            controller.remove('username')
+            controller.set('user_id', '', max_age=0, same_site='none', secure=True)
+            controller.set('username', '', max_age=0, same_site='none', secure=True)
             st.rerun()
 
 
