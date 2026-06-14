@@ -202,10 +202,6 @@ def inject_custom_css():
             text-align: left !important;
             width: 100% !important;
         }
-        
-        [data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(2) button p {
-            text-align: center !important;
-        }
 
         /* Logout button: reddish tint */
         [data-testid="stSidebar"] .element-container:last-child button {
@@ -428,17 +424,17 @@ def render_login_signup(controller):
 
 def render_sidebar(controller):
     with st.sidebar:
-        col1, col2 = st.columns([4, 1.2])
-        with col1:
-            st.markdown(f"<h3 style='margin-top: 0.2rem; font-size: 0.95rem; font-weight: 600; color: #f5f5f5;'>{st.session_state.username}</h3>", unsafe_allow_html=True)
-        with col2:
-            if st.button("\u002B", key="new_chat", help="New Chat", use_container_width=True):
-                st.session_state.current_session_id = None
-                st.session_state.messages = []
-                st.rerun()
+        # Username display
+        st.markdown(f"<div style='font-size: 1.05rem; font-weight: 600; color: #f5f5f5; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px;'><span style='font-size: 1.2rem; color: #2dd4a8;'>👤</span> {st.session_state.username}</div>", unsafe_allow_html=True)
+        
+        # New Chat Button
+        if st.button("➕ New Chat", key="new_chat", use_container_width=True):
+            st.session_state.current_session_id = None
+            st.session_state.messages = []
+            st.rerun()
             
         st.markdown("---")
-        st.markdown("### Chat History")
+        st.markdown("### Recent Chats")
         
         sessions = db.get_user_sessions(st.session_state.user_id)
         if not sessions:
