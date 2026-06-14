@@ -463,7 +463,8 @@ def render_sidebar(controller):
 
 
 FAVICON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "medibot_favicon.png")
-
+USER_AVATAR_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "user_avatar.svg")
+BOT_AVATAR_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bot_avatar.svg")
 
 def main():
     st.set_page_config(
@@ -501,7 +502,8 @@ def main():
     hero_placeholder = st.empty()
     
     for message in st.session_state.messages:
-        with st.chat_message(message['role']):
+        avatar_path = USER_AVATAR_PATH if message['role'] == 'user' else BOT_AVATAR_PATH
+        with st.chat_message(message['role'], avatar=avatar_path):
             st.markdown(message['content'])
             if 'sources' in message and message['sources']:
                 with st.expander("📚 Source Documents"):
@@ -522,7 +524,7 @@ def main():
             title = prompt[:25] + "..." if len(prompt) > 25 else prompt
             st.session_state.current_session_id = db.create_chat_session(st.session_state.user_id, title)
             
-        st.chat_message('user').markdown(prompt)
+        st.chat_message('user', avatar=USER_AVATAR_PATH).markdown(prompt)
         st.session_state.messages.append({'role': 'user', 'content': prompt})
         db.save_message(st.session_state.current_session_id, 'user', prompt, None)
 
@@ -569,7 +571,7 @@ Answer:"""
                     "source": doc.metadata.get('source', 'N/A').split('\\')[-1] if '\\' in doc.metadata.get('source', '') else doc.metadata.get('source', 'N/A')
                 })
 
-            with st.chat_message('assistant'):
+            with st.chat_message('assistant', avatar=BOT_AVATAR_PATH):
                 st.markdown(result_formatted)
                 with st.expander("📚 Source Documents"):
                     for i, s_dict in enumerate(source_data, 1):
