@@ -304,14 +304,17 @@ def inject_custom_css():
         /* ===== Bottom Bar Fix ===== */
         .stBottom, .stBottomBlockContainer,
         [data-testid="stBottom"],
-        [data-testid="stBottomBlockContainer"] {
+        [data-testid="stBottomBlockContainer"],
+        section[data-testid="stBottomBlockContainer"],
+        [data-testid="stBottom"] > div,
+        .stBottom > div {
             background: transparent !important;
+            background-color: transparent !important;
             border-top: none !important;
+            box-shadow: none !important;
         }
 
         section[data-testid="stBottomBlockContainer"] {
-            background: transparent !important;
-            border-top: none !important;
             padding: 0.6rem 1rem !important;
         }
 
