@@ -399,8 +399,8 @@ def render_login_signup(controller):
                         st.session_state.username = username
                         st.session_state.current_session_id = None
                         st.session_state.messages = []
-                        controller.set('user_id', user_id, max_age=2592000, same_site='none', secure=True)
-                        controller.set('username', username, max_age=2592000, same_site='none', secure=True)
+                        controller.set('user_id', user_id)
+                        controller.set('username', username)
                         st.rerun()
                     else:
                         st.error("Invalid username or password")
@@ -454,12 +454,12 @@ def render_sidebar(controller):
             for key in ['user_id', 'username', 'current_session_id', 'messages']:
                 if key in st.session_state:
                     del st.session_state[key]
-            controller.set('user_id', '', max_age=0, same_site='none', secure=True)
-            controller.set('username', '', max_age=0, same_site='none', secure=True)
+            controller.remove('user_id')
+            controller.remove('username')
             st.rerun()
 
 
-FAVICON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "medibot_favicon.png")
+FAVICON_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "medibot_theme_logo.png")
 USER_AVATAR_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "user_avatar.svg")
 BOT_AVATAR_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bot_avatar.svg")
 
@@ -509,8 +509,8 @@ def main():
                         st.markdown(f"- **Page:** {source_dict.get('page_label', 'N/A')}")
                         st.markdown(f"- **File:** {source_dict.get('source', 'N/A')}")
 
-    placeholder_text = "Ask MediBot" if not st.session_state.messages else "Reply to MediBot"
-    prompt = st.chat_input(placeholder_text)
+    prompt = st.chat_input("Ask MediBot anything about health...")
+
     if not st.session_state.messages and not prompt:
         with hero_placeholder.container():
             render_hero()
