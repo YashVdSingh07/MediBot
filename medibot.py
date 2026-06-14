@@ -399,8 +399,8 @@ def render_login_signup(controller):
                         st.session_state.username = username
                         st.session_state.current_session_id = None
                         st.session_state.messages = []
-                        controller.set('user_id', user_id)
-                        controller.set('username', username)
+                        controller.set('user_id', user_id, max_age=2592000)
+                        controller.set('username', username, max_age=2592000)
                         st.rerun()
                     else:
                         st.error("Invalid username or password")
