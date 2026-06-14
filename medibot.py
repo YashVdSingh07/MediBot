@@ -141,7 +141,7 @@ def inject_custom_css():
 
         /* ===== Tab styling: green underline ===== */
         .stTabs [data-baseweb="tab-list"] {
-            gap: 0;
+            gap: 1.5rem;
         }
 
         .stTabs [data-baseweb="tab"] {
