@@ -139,6 +139,38 @@ def inject_custom_css():
             padding: 0;
         }
 
+        /* ===== Tab styling: green underline ===== */
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 0;
+        }
+
+        .stTabs [data-baseweb="tab"] {
+            color: rgba(255, 255, 255, 0.5) !important;
+            font-weight: 500 !important;
+        }
+
+        .stTabs [aria-selected="true"] {
+            color: #2dd4a8 !important;
+        }
+
+        .stTabs [data-baseweb="tab-highlight"] {
+            background-color: #2dd4a8 !important;
+        }
+
+        .stTabs [data-baseweb="tab-border"] {
+            background-color: rgba(45, 212, 168, 0.1) !important;
+        }
+
+        /* ===== Input field text alignment ===== */
+        .stTextInput input {
+            padding-left: 0.75rem !important;
+            color: #f5f5f5 !important;
+        }
+
+        .stTextInput label {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+
         /* ===== Sidebar ===== */
         [data-testid="stSidebar"] {
             background-color: #081210 !important;
@@ -329,7 +361,7 @@ def render_login_signup():
         
         with tab1:
             with st.form("login_form"):
-                username = st.text_input("Username")
+                username = st.text_input("Name")
                 password = st.text_input("Password", type="password")
                 submit = st.form_submit_button("Login", use_container_width=True)
                 
@@ -346,19 +378,19 @@ def render_login_signup():
                         
         with tab2:
             with st.form("signup_form"):
-                new_username = st.text_input("Choose a Username")
+                new_username = st.text_input("Choose a Name")
                 new_password = st.text_input("Choose a Password", type="password")
                 submit_signup = st.form_submit_button("Sign Up", use_container_width=True)
                 
                 if submit_signup:
                     if len(new_username) < 3 or len(new_password) < 6:
-                        st.error("Username must be at least 3 chars and password 6 chars.")
+                        st.error("Name must be at least 3 chars and password 6 chars.")
                     else:
                         user_id = db.create_user(new_username, new_password)
                         if user_id:
                             st.success("Account created! You can now log in.")
                         else:
-                            st.error("Username already exists.")
+                            st.error("Name already exists.")
 
 
 def render_sidebar():
