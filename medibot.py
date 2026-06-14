@@ -310,7 +310,7 @@ def inject_custom_css():
         }
 
         section[data-testid="stBottomBlockContainer"] {
-            background: linear-gradient(135deg, #080f0d 0%, #0a1a16 50%, #080f0d 100%) !important;
+            background: transparent !important;
             border-top: none !important;
             padding: 0.6rem 1rem !important;
         }
