@@ -87,8 +87,9 @@ def inject_custom_css():
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
         /* ===== Global Dark Teal Theme ===== */
-        .stApp {
+        .stApp, .stAppViewContainer, [data-testid="stAppViewContainer"] {
             background: linear-gradient(145deg, #080f0d 0%, #0a1a16 25%, #0d2420 50%, #0a1a16 75%, #080f0d 100%) !important;
+            background-attachment: fixed !important;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
@@ -302,19 +303,16 @@ def inject_custom_css():
         }
 
         /* ===== Bottom Bar Fix ===== */
-        .stBottom, .stBottomBlockContainer,
+        .stBottom, 
+        .stBottom > div,
+        .stBottomBlockContainer,
         [data-testid="stBottom"],
-        [data-testid="stBottomBlockContainer"],
-        section[data-testid="stBottomBlockContainer"],
         [data-testid="stBottom"] > div,
-        .stBottom > div {
+        [data-testid="stBottomBlockContainer"],
+        section[data-testid="stBottomBlockContainer"] {
             background: transparent !important;
             background-color: transparent !important;
             border-top: none !important;
-            box-shadow: none !important;
-        }
-
-        section[data-testid="stBottomBlockContainer"] {
             padding: 0.6rem 1rem !important;
         }
 
