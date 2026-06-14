@@ -252,54 +252,74 @@ def inject_custom_css():
             animation: fadeUp 0.25s ease-out;
         }
 
-        /* ===== Chat Input ===== */
-        .stChatInput {
-            background: transparent !important;
+        /* ===== Modern Chat Input Bar ===== */
+        [data-testid="stChatInput"] {
+            background-color: transparent !important;
+            padding-bottom: 2rem !important; /* Lift it up from the absolute bottom */
+        }
+        
+        [data-testid="stChatInput"] > div {
+            border-radius: 30px !important;
+            border: 1px solid rgba(45, 212, 168, 0.3) !important;
+            background: rgba(8, 20, 15, 0.5) !important; /* Frosted glass teal */
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+            padding: 4px 6px 4px 16px !important; /* extra left padding for text */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .stChatInput > div {
-            border-radius: 26px !important;
-            border: 1px solid rgba(45, 212, 168, 0.18) !important;
-            background: rgba(8, 15, 13, 0.7) !important;
-            transition: border-color 0.2s ease;
-            padding: 2px !important;
+        [data-testid="stChatInput"] > div:focus-within {
+            border-color: rgba(45, 212, 168, 0.7) !important;
+            box-shadow: 0 0 20px rgba(45, 212, 168, 0.15) !important;
         }
 
-        .stChatInput > div:focus-within {
-            border-color: rgba(45, 212, 168, 0.4) !important;
-            box-shadow: 0 0 20px rgba(45, 212, 168, 0.08) !important;
-        }
-
-        .stChatInput textarea,
-        .stChatInput input {
+        /* Clear all internal backgrounds from Streamlit's BaseWeb components */
+        [data-testid="stChatInput"] [data-baseweb="textarea"],
+        [data-testid="stChatInput"] [data-baseweb="base-input"] {
+            background-color: transparent !important;
             background: transparent !important;
             border: none !important;
+        }
+
+        /* Text Area Styling */
+        [data-testid="stChatInput"] textarea {
+            background-color: transparent !important;
+            background: transparent !important;
             color: #f5f5f5 !important;
             caret-color: #2dd4a8 !important;
             font-family: 'Inter', sans-serif !important;
-            font-size: 0.9rem !important;
+            font-size: 1rem !important;
+            line-height: 1.5 !important;
         }
 
-        .stChatInput textarea::placeholder,
-        .stChatInput input::placeholder {
-            color: rgba(255, 255, 255, 0.3) !important;
+        [data-testid="stChatInput"] textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4) !important;
         }
 
-        .stChatInput button {
+        /* Send Button */
+        [data-testid="stChatInput"] button {
             background: linear-gradient(135deg, #2dd4a8, #059669) !important;
             border: none !important;
             border-radius: 50% !important;
             color: #fff !important;
             transition: all 0.2s ease !important;
+            height: 2.6rem !important;
+            width: 2.6rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
 
-        .stChatInput button:hover {
-            box-shadow: 0 0 12px rgba(45, 212, 168, 0.3) !important;
+        [data-testid="stChatInput"] button:hover {
+            box-shadow: 0 0 15px rgba(45, 212, 168, 0.4) !important;
             transform: scale(1.05) !important;
         }
 
-        .stChatInput button svg {
+        [data-testid="stChatInput"] button svg {
             fill: #fff !important;
+            width: 1.2rem !important;
+            height: 1.2rem !important;
         }
 
         /* ===== Bottom Bar Fix ===== */
