@@ -359,6 +359,68 @@ def inject_custom_css():
             border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb:hover { background: rgba(45, 212, 168, 0.3); }
+
+        /* ===== Hide default Streamlit "Running..." status ===== */
+        [data-testid="stStatusWidget"] {
+            display: none !important;
+        }
+
+        /* ===== Medical Loading Spinner ===== */
+        @keyframes medSpin {
+            0%   { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes medPulse {
+            0%, 100% { opacity: 0.4; }
+            50%      { opacity: 1; }
+        }
+
+        .medi-loader-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem 0;
+        }
+        .medi-spinner {
+            width: 52px; height: 52px;
+            position: relative;
+            animation: medSpin 1.8s linear infinite;
+        }
+        .medi-spinner-ring {
+            position: absolute; inset: 0;
+            border: 3px solid rgba(45, 212, 168, 0.12);
+            border-top-color: #2dd4a8;
+            border-radius: 50%;
+        }
+        .medi-spinner-cross {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .medi-spinner-cross .v {
+            position: absolute;
+            width: 4px; height: 18px;
+            background: #2dd4a8;
+            border-radius: 2px;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .medi-spinner-cross .h {
+            position: absolute;
+            width: 18px; height: 4px;
+            background: #2dd4a8;
+            border-radius: 2px;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .medi-loader-text {
+            color: rgba(255,255,255,0.5);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            animation: medPulse 1.6s ease-in-out infinite;
+        }
     </style>
     """, unsafe_allow_html=True)
 
@@ -536,9 +598,25 @@ Question: {question}
 
 Answer:"""
 
+        # Show medical-themed loading animation
+        loader_placeholder = st.empty()
+        loader_placeholder.markdown("""
+        <div class="medi-loader-wrap">
+            <div class="medi-spinner">
+                <div class="medi-spinner-ring"></div>
+                <div class="medi-spinner-cross">
+                    <div class="v"></div>
+                    <div class="h"></div>
+                </div>
+            </div>
+            <div class="medi-loader-text">Analyzing your query...</div>
+        </div>
+        """, unsafe_allow_html=True)
+
         try:
             vectorstore = get_vectorstore()
             if vectorstore is None:
+                loader_placeholder.empty()
                 st.error("Failed to load the vector store")
                 return
 
@@ -555,6 +633,9 @@ Answer:"""
             )
 
             response = qa_chain.invoke({'query': prompt})
+
+            # Clear the loader
+            loader_placeholder.empty()
 
             result = response["result"].strip()
             result_formatted = format_llm_response(result)
